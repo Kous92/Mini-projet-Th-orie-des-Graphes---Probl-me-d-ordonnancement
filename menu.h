@@ -2,6 +2,7 @@
 #define MENU_H
 
 int menu_principal();
-int menu();
+int menu_fichier();
+int menu(bool circuit);
 
 #endif

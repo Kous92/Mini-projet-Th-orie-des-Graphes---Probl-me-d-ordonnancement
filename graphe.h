@@ -31,6 +31,8 @@ class Graphe
 	int **matrice_valeurs;
 	int puissance_fermeture_transitive;
 	map<string, int> rangs_sommets;
+	map<string, int> dates_plus_tot;
+	map<string, int> dates_plus_tard;
 	bool circuit;
 
 	public:
@@ -44,6 +46,7 @@ class Graphe
 	string getTache(int indice) const;
 	bool **getMatriceAdjacence() const;
 	bool getValeurCaseMatriceAdjacence(int i, int j) const;
+	bool getStatutCircuit() const;
 	int getPuissanceFermetureTransitive() const;
 	void affichageListeTaches() const;
 	Sommet definitionContraintes(string chaine);
@@ -56,6 +59,10 @@ class Graphe
 	void FermetureTransitiveMatrice();
 	void definitionRangsSommets();
 	int calculRecursifRangSommet(int position_sommet);
+	void definitionCalendrierAuPlusTard();
+    void definitionCalendrierAuPlusTot();
+    int calculRecursifDateAuPlusTard(int position_sommet);
+    int calculRecursifDateAuPlusTot(int position_sommet);
 	void creationGrapheOrdonnancement();
 	void affichageListeContraintes() const;
 	void affichageListeSuccesseurs() const;
@@ -63,8 +70,11 @@ class Graphe
 	void affichageMatriceAdjacence() const; 
 	void affichageMatriceValeur() const;
 	void affichageMatriceTransitive() const;
-	void affichageMatriceAdjacencePuissance(int puissance) const;
+	void affichageMatriceAdjacencePuissance(int puissance, bool affichage) const;
 	void affichageRangsSommets() const;
+	void affichageTableauDates() const;
+	void affichageDiagrammeGanttCalendrierPlusTot();
+	void affichageDiagrammeGanttCalendrierPlusTard();
 };
 
 #endif

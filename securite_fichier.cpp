@@ -462,3 +462,40 @@ bool verificationFichier(string nom_fichier)
 		return false;
 	}
 }
+
+string saisie_securisee_nom_fichier()
+{
+	string nom_fichier;
+	bool check = false;
+
+	do
+	{
+		if (check == false)
+		{
+			// On vide le buffer pour éviter qu'à chaque saisie, que la touche entrée lors de la précédente saisie ne perturbe pas la tentative
+			char check_buffer;
+
+			while (check_buffer != '\n')
+			{
+				check_buffer = getchar();
+			}
+		}
+
+		wcout << L">>> Saisir le nom du fichier ou le chemin avec le nom du fichier: ";
+		getline(cin, nom_fichier);
+
+		if (nom_fichier.substr(nom_fichier.size() - 4, 4) != ".txt")
+		{
+			cout << "-> ERREUR: Le nom du fichier doit se terminer par l'extension .txt" << endl << endl;
+			cin.clear();
+		}
+		else
+		{
+			check = true;
+			cin.clear();
+		}
+
+	} while (check == false);
+
+	return nom_fichier;
+}

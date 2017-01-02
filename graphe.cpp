@@ -6,6 +6,7 @@
 #include <set>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 #include "graphe.h"
 #include "sommet.h"
 #include "arc.h"
@@ -312,6 +313,11 @@ bool Graphe::getValeurCaseMatriceAdjacence(int i, int j) const
 	return matrice_adjacence[i][j];
 }
 
+bool Graphe::getStatutCircuit() const
+{
+	return circuit;
+}
+
 int Graphe::getPuissanceFermetureTransitive() const
 {
 	return puissance_fermeture_transitive;
@@ -500,7 +506,7 @@ bool Graphe::detectionCircuit()
    	// Étape 1: Vérification de la présence de boucles
    	wcout << L"-> Lecture de la matrice d'adjacence associée à sa fermeture transitive: " << endl << endl;
 
-   	affichageMatriceAdjacencePuissance(puissance_fermeture_transitive);
+   	affichageMatriceAdjacencePuissance(puissance_fermeture_transitive, false);
 
    	for (int i = 0; i < nombre_taches; i++)
    	{
@@ -543,8 +549,6 @@ void Graphe::definitionMatrices()
 	// Lecture des arcs
 	for (int i = 0; i < nombre_arcs; i++)
 	{
-		cout << i << "/" << nombre_arcs << " -> Sommets: " << nombre_taches << endl;
-
 		predecesseur_actuel = liste_arc[i].getPredecesseur();
 		sommet_actuel = liste_arc[i].getNomSommet();
 		duree_actuelle = liste_arc[i].getDuree();
@@ -562,8 +566,6 @@ void Graphe::definitionMatrices()
 
 		matrice_adjacence[position2][position1] = true;
 		matrice_valeurs[position2][position1] = duree_actuelle;
-
-		cout << "OK" << endl;
 	}
 }
 
@@ -597,7 +599,7 @@ void Graphe::FermetureTransitiveMatrice()
     wcout << L">>> Étape 9: Calcul de la matrice d'adjacence associée à sa fermeture transitive (" << nombre_taches << " sommets -> " << nombre_taches - 2 << L" puissances de 2 à " << nombre_taches - 1 << ")..." << endl << endl;
     wcout << L" -> Matrice d'adjacence M avant calcul de la fermeture transitive: " << endl << endl;
 
-    affichageMatriceAdjacencePuissance(1);
+    affichageMatriceAdjacencePuissance(1, false);
     Pause();
 
     cout << endl;
@@ -640,7 +642,7 @@ void Graphe::FermetureTransitiveMatrice()
         	}
     	}
 
-    	affichageMatriceAdjacencePuissance(n);
+    	affichageMatriceAdjacencePuissance(n, false);
     	puissance_fermeture_transitive = n;
 	}
 }
@@ -666,24 +668,171 @@ void Graphe::definitionRangsSommets()
 
 int Graphe::calculRecursifRangSommet(int position_sommet)
 {
-	set<int> pred;
+	/* Le conteneur de la STL set permet de décrire un ensemble ordonné et sans doublons d'éléments, de complexité O(log(n)) pour la recherche et l'insertion. 
+	   En effet, la structure std::set tire partie de l'ordre sur T pour construire une structure d'arbre rouge noir, ce qui permet une recherche
+	   logarithmique d'un élément. Cela va nous être extrêmement utile pour procéder à la définition du rang du sommet ciblé en procédant à des
+	   appels récursifs de la méthode pour parcourir le graphe depuis le sommet ciblé en passant par ses prédécesseurs. Si le sommet n'a pas de
+	   prédécesseur, il aura automatiquement le rang 0. 
+	   On parcourt la graphe à l'aide de la matrice d'adjacence en appelant récursivement la méthode s'il y a une relation (un 1) à la case situé à la position:
+	   - Ligne: la valeur de i dans la boucle for
+	   - Colonne: le sommet qui nous intéresse
+	   -> Après avoir effectué ses appels récursifs successifs, c'est à dire dès que le parcours du graphe sera terminé par un sommet sans prédécesseur.
+	   Le rang est déterminé par le dernier élément du conteneur set<int> rempli par le parcours récursif de la méthode. */
+
+	set<int> predecesseur;
 
     for (int i = 0; i < nombre_taches; i++) 
     {
         if (matrice_adjacence[i][position_sommet]) 
         { 
-        	// Recherche du predecesseur du sommet actuel: appel récursif de la méthode
-            pred.insert(calculRecursifRangSommet(i));
+        	/* Recherche du predecesseur du sommet actuel en lisant la matrice d'adjacence, on cible:
+        	   -> Ligne numéro i dans la boucle for
+        	   -> Colonne numéro position_sommet (numéro sommet) 
+        	   -> Si la case est à 1 (true): appel récursif de la méthode */
+            predecesseur.insert(calculRecursifRangSommet(i));
         }
     }
 
-    if (pred.size() == 0) 
+     // S'il n'y a pas de successeur, alors le rang du sommet est donc 0 par défaut
+    if (predecesseur.size() == 0) 
     {
         return 0;
     }
     else 
     {
-        return *pred.rbegin() + 1;
+        /* Si le conteneur set est rempli après appels récursifs successifs, on retourne le dernier élément du conteneur
+           -> Le dernier élément de predecesseur est le rang sommet en question
+           -> rbegin = dernier élément de set<int>, parcours en sens inverse (reverse_iterator) */
+        return *predecesseur.rbegin() + 1; 
+    }
+}
+
+void Graphe::definitionCalendrierAuPlusTot()
+{
+	system("clear");
+
+	/* L'utilisation d'un tableau associatif map<string, int> est très utile ici:
+	   -> On va récupérer les rangs du tableau associatif map<string, int> rangs_sommets
+	   -> On va stocker le résultat du calcul récursif de la date au plus tard dans le tableau associatif
+	      map<string, int> dates_plus_tard
+	*/
+	wcout << L">>> Étape 12: Définition du calendrier au plus tôt..." << endl << endl;
+	int i = 0;
+
+    // Pour chaque sommet, on calcule sa date au plus tôt
+    for (map<string, int>::iterator it = rangs_sommets.begin(); it != rangs_sommets.end(); it++)
+    {
+        dates_plus_tot[it->first] = calculRecursifDateAuPlusTot(i);
+        cout << " -> Sommet: " << it->first << ", ";
+        wcout << L"Date au plus tôt attribuée: " << dates_plus_tot[it->first] << endl;
+        i++;
+    }
+}
+
+int Graphe::calculRecursifDateAuPlusTot(int position_sommet)
+{
+	/* Pour calculer la date au plus tôt d'un sommet = max(date au plus tôt(prédécesseur)) - duree prédécesseur
+	   max(date au plus tôt(prédécesseur)) -> matrice_valeurs[*it][position_sommet]
+	   calculRecursifDateAuPlusTot(*it), it dans un boucle for itérée par un iterator sur set<int> prédecesseur
+	   duree_sommet[sommet] -> matrice_valeurs[position_sommet][*it] */
+
+    set<int> predecesseur; // La liste de tous les prédécesseurs du graphe
+
+    for (int i = 0; i < nombre_taches; i++) 
+    {
+        if (matrice_adjacence[i][position_sommet]) 
+        { 
+        	/* Recherche du predecesseur du sommet actuel en lisant la matrice d'adjacence, on cible:
+        	   -> Ligne numéro i dans la boucle for
+        	   -> Colonne numéro position_sommet (numéro sommet) */
+            predecesseur.insert(i);
+        }
+    }
+
+    // Cette liste nous permettra de séléctionner le maximum de la date au plus tôt du prédécesseur
+    set<int> date_predecesseur;
+
+   	for (set<int>::iterator it = predecesseur.begin(); it != predecesseur.end(); it++)
+    {
+        date_predecesseur.insert(matrice_valeurs[*it][position_sommet] + calculRecursifDateAuPlusTot(*it));
+    }
+
+    // S'il n'y a pas de successeur, alors la date au plus tard du sommet est donc 0 par défaut
+    if (date_predecesseur.empty())
+    {
+        return 0;
+    }
+    else
+    {
+        /* Si le conteneur set est rempli après appels récursifs successifs, on retourne le dernier élément du conteneur
+           -> Le dernier élément de date_predecesseur est la date au plus tôt du sommet en question
+           -> rbegin = dernier élément de set<int>, parcours en sens inverse (reverse_iterator) */
+        return *date_predecesseur.rbegin();
+    }
+}
+
+void Graphe::definitionCalendrierAuPlusTard()
+{
+	system("clear");
+
+	wcout << L">>> Étape 13: Définition du calendrier au plus tard..." << endl << endl;
+	int i = 0;
+	
+	/* L'utilisation d'un tableau associatif map<string, int> est très utile ici:
+	   -> On va récupérer les rangs du tableau associatif map<string, int> rangs_sommets
+	   -> On va stocker le résultat du calcul récursif de la date au plus tard dans le tableau associatif
+	      map<string, int> dates_plus_tard */
+
+    // Pour chaque sommet, on calcule sa date au plus tard
+    for (map<string, int>::iterator it = rangs_sommets.begin(); it != rangs_sommets.end(); it++)
+    {
+        // Les sommets sont dans l'ordre, on prend le numéro (ici i) faisant référence au nom du sommet
+        dates_plus_tard[it->first] = calculRecursifDateAuPlusTard(i);
+        cout << " -> Sommet: " << it->first << ", ";
+        wcout << L"Date au plus tard attribuée: " << dates_plus_tard[it->first] << endl;
+        i++;
+    }
+}
+
+int Graphe::calculRecursifDateAuPlusTard(int position_sommet)
+{
+	/* Pour calculer la date au plus tard d'un sommet = min(date au plus tard(successeur)) - duree_sommet[sommet]
+	   min(date au plus tard(successeur)) -> calculRecursifDateAuPlusTard(*it), it dans un boucle for itérée par un iterator sur set<int> successeur
+	   duree_sommet[sommet] -> matrice_valeurs[position_sommet][*it] */
+
+    set<int> successeur; 
+
+    for (int i = 0; i < nombre_taches; i++) 
+    {
+        /* Recherche du successeur du sommet actuel en lisant la matrice d'adjacence, on cible:
+           -> Ligne numéro position_sommet (numéro sommet)
+           -> Colonne numéro i dans la boucle for */ 
+        if (matrice_adjacence[position_sommet][i]) 
+        { 
+        	// Recherche du successeur du sommet actuel
+            successeur.insert(i);
+        }
+    }
+
+    // Cette liste nous permettra de séléctionner le minimum de la date au plus tard du prédécesseur
+    set<int> date_successeur;
+
+   	for (set<int>::iterator it = successeur.begin(); it != successeur.end(); it++)
+    {
+        // La date au plus tard minimale des successeurs s'obtient par appels récursifs successifs de la méthode avec le successeur en question 
+        date_successeur.insert(calculRecursifDateAuPlusTard(*it) - matrice_valeurs[position_sommet][*it]);
+    }
+
+    // S'il n'y a pas de successeur, alors la date au plus tard du sommet est égale à la date au plus tôt
+    if (date_successeur.empty())
+    {
+        return calculRecursifDateAuPlusTot(position_sommet);
+    }
+    else
+    {
+        /* Si le conteneur set est rempli après appels récursifs successifs, on retourne le premier élément du conteneur
+           -> Le premier élément de date_successeur est la date au plus tard du sommet en question */
+        return *date_successeur.begin();
     }
 }
 
@@ -1017,8 +1166,17 @@ void Graphe::affichageMatriceTransitive() const
 	cout << endl;
 }
 
-void Graphe::affichageMatriceAdjacencePuissance(int puissance) const
+void Graphe::affichageMatriceAdjacencePuissance(int puissance, bool affichage) const
 {
+	// Si on n'est pas dans la détection de circuit
+	if (affichage == true)
+	{
+		system("clear");
+
+		wcout << L">>> Matrice d'adjacence associée à sa fermeture transitive: " << endl;
+		wcout << L" -> Ici, avec " << nombre_taches << "sommets: M^" << puissance << endl << endl;
+	}
+
 	// Affichage du contenu de la matrice
 	for (int i = 0; i < nombre_taches; i++)
 	{ 	
@@ -1027,7 +1185,7 @@ void Graphe::affichageMatriceAdjacencePuissance(int puissance) const
 		{
 			if (puissance == 1)
 			{
-				cout << "M =   ";
+				cout << "M =    ";
 			}
 			else
 			{
@@ -1153,4 +1311,181 @@ void Graphe::affichageRangsSommets() const
     }
 
     cout << endl << endl;
+}
+
+void Graphe::affichageTableauDates() const
+{
+	system("clear");
+	int duree_minimale = 0, i = 0;
+	map<string, int>::const_iterator it2 = dates_plus_tard.begin();
+
+	wcout << L">>> Dates au plus tôt et au plus tard de chaque tâche du projet: " << endl << endl;
+
+	for (map<string, int>::const_iterator it = dates_plus_tot.begin(); it != dates_plus_tot.end(); it++)
+	{
+		wcout << L"Tâche ";
+		cout << liste_taches[i] << " -> ";
+		wcout << L"Date au plus tôt: " << it->second << L", date au plus tard: " << it2->second << endl;
+		duree_minimale = it2->second;
+		i++;
+		*it2++;
+	}
+
+	cout << endl;
+
+	wcout << L">>> Durée minimale nécéssaire pour réaliser le projet: " << duree_minimale << endl << endl;
+}
+
+void Graphe::affichageDiagrammeGanttCalendrierPlusTot()
+{
+	system("clear");
+
+	int dernier_delai = 0, i = 0;
+	vector<int> date_debut;
+	vector<int> date_fin;
+
+	wcout << L">>> Diagramme de GANTT du calendrier au plus tôt: " << endl << endl;
+
+	// Calcul des intervalles pour faire les flèches du diagramme de GANTT
+	for (map<string, int>::iterator it = dates_plus_tot.begin(); it != dates_plus_tot.end(); it++)
+	{
+		dernier_delai = it->second;
+		date_debut.push_back(it->second); // Date de début de la tâche = Date au plus tôt de la tâche
+		date_fin.push_back(it->second + liste_duree[i]); // Date de fin de la tâche = Date au plus tôt de la tâche + durée de la tâche
+		i++;
+	}
+
+	for (int i = 0; i <= dernier_delai; i++)
+	{
+		if (i == 0)
+		{
+			cout << "  " << i << "  ";
+		}
+		else if (i < 10)
+		{
+			cout << i << "  ";
+		}
+		else
+		{
+			cout << i << " ";
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < liste_taches.size(); i++)
+	{
+		cout << liste_taches[i] << " ";
+
+		for (int j = 0; j < dernier_delai; j++)
+		{
+			// Si on n'est pas dans l'intervalle de la tâche en question, l'espace est vide, sinon un symbole est inscrit sur les cases de l'intervalle
+			if ((j < date_debut[i]) || (j > date_fin[i]))
+			{
+				// Fin de ligne
+				if (j == dernier_delai - 1)
+				{
+					cout << "|  |";
+				}
+				else
+				{
+					cout << "|  ";
+				}
+			}
+			else
+			{
+				// Fin de ligne
+				if (j == dernier_delai - 1)
+				{
+					cout << "|==|";
+				}
+				else
+				{
+					cout << "|==";
+				}
+			}
+		}
+
+		cout << endl;
+	}
+
+	cout << endl;
+}
+
+void Graphe::affichageDiagrammeGanttCalendrierPlusTard()
+{
+	system("clear");
+
+	int dernier_delai = 0, i = 0;
+
+	// Ces 2 vectors vont aider à l'affichage des flèches du diagramme de GANTT
+	vector<int> date_debut;
+	vector<int> date_fin;
+
+	cout << ">>> Diagramme de GANTT du calendrier au plus tard: " << endl << endl;
+
+	// Calcul des intervalles pour faire les flèches du diagramme de GANTT
+	for (map<string, int>::iterator it = dates_plus_tard.begin(); it != dates_plus_tard.end(); it++)
+	{
+		dernier_delai = it->second;
+		date_debut.push_back(it->second); // Date de début de la tâche = Date au plus tôt de la tâche
+		date_fin.push_back(it->second + liste_duree[i]); // Date de fin de la tâche = Date au plus tôt de la tâche + durée de la tâche
+		i++;
+	}
+
+	for (int i = 0; i <= dernier_delai; i++)
+	{
+		if (i == 0)
+		{
+			cout << "  " << i << "  ";
+		}
+		else if (i < 10)
+		{
+			cout << i << "  ";
+		}
+		else
+		{
+			cout << i << " ";
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < liste_taches.size(); i++)
+	{
+		cout << liste_taches[i] << " ";
+
+		for (int j = 0; j < dernier_delai; j++)
+		{
+			// Si on n'est pas dans l'intervalle de la tâche en question, l'espace est vide, sinon un symbole est inscrit sur les cases de l'intervalle
+			if ((j < date_debut[i]) || (j > date_fin[i]))
+			{
+				// Fin de ligne
+				if (j == dernier_delai - 1)
+				{
+					cout << "|  |";
+				}
+				else
+				{
+					cout << "|  ";
+				}
+			}
+			else
+			{
+				// Fin de ligne
+				if (j == dernier_delai - 1)
+				{
+					cout << "|==|";
+				}
+				else
+				{
+					cout << "|==";
+				}
+			}
+		}
+
+		cout << endl;
+	}
+
+	cout << endl;
 }

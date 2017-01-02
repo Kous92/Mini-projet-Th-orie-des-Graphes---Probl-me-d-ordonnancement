@@ -6,5 +6,6 @@
 using namespace std;
 
 bool verificationFichier(string nom_fichier);
+string saisie_securisee_nom_fichier();
 
 #endif
