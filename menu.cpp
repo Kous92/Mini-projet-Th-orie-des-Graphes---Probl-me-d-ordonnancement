@@ -16,7 +16,7 @@ int menu_principal()
 	int choix = 0;
 	bool check = false;
 
-	wcout << L"1 - Lire un des fichiers prédéfinis" << endl;
+	wcout << L"1 - Lire un des fichiers officiels de test" << endl;
 	cout << "2 - Lire un fichier par saisie manuelle du nom du fichier (avec son chemin)" << endl;
 	cout << "0 - Quitter" << endl << endl;
 
@@ -62,7 +62,6 @@ int menu_fichier()
 	cout << "2 - Lire le fichier test 2" << endl;
 	cout << "3 - Lire le fichier test 3" << endl;
 	cout << "4 - Lire le fichier test 4" << endl;
-	cout << "5 - Lire le fichier test 5" << endl;
 
 	// Saisie sécurisée
 	do
@@ -79,13 +78,13 @@ int menu_fichier()
 		}
 		else 
 		{
-			if ((choix < 1) || (choix > 5))
+			if ((choix < 1) || (choix > 4))
 			{
 				cerr << "Erreur: CHOIX INVALIDE !" << endl;
 			}
 		}
 
-	} while (((choix < 1) || (choix > 5)) || (check == false));
+	} while (((choix < 1) || (choix > 4)) || (check == false));
 
 	return choix;
 }
