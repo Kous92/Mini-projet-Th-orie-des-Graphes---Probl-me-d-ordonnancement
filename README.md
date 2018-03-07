@@ -59,20 +59,20 @@ En lisant le contenu d'un fichier, le programme:
 	  -> Un seul espace entre "Sommets" et "+", un seul entre "+" et "valeurs"
 	  -> ATTENTION: PAS DE LIGNES EN EXCÈS JUSTE APRÈS !
 
-Exemple de syntaxe correcte avec 5 sommets dans un fichier .txt:
-
-Sommets
-5
-Sommets + valeur
-A 15
-B 3
-C 7
-D 25
-E 8
-Sommets + contraintes
-A
-B A
-C A
-D BC
-E CD
-Fin
+	Exemple de syntaxe correcte avec 5 sommets dans un fichier .txt:
+	Sommets
+	5
+	Sommets + valeur
+	A 15
+	B 3
+	C 7
+	D 25
+	E 8
+	Sommets + contraintes
+	A
+	B A
+	C A
+	D BC
+	E CD
+	Fin
+			
