@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "graphe.h"
-#include "sommet.h"
+#include "benmamar-samba-yousfi-graphe-UNIX.h"
+#include "benmamar-samba-yousfi-sommet-UNIX.h"
 
 using namespace std;
 

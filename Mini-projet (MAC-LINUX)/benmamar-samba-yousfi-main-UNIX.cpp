@@ -3,11 +3,11 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include "graphe.h"
-#include "arc.h"
-#include "sommet.h"
-#include "menu.h"
-#include "securite_fichier.h"
+#include "benmamar-samba-yousfi-graphe-UNIX.h"
+#include "benmamar-samba-yousfi-arc-UNIX.h"
+#include "benmamar-samba-yousfi-sommet-UNIX.h"
+#include "benmamar-samba-yousfi-menu-UNIX.h"
+#include "benmamar-samba-yousfi-securite_fichier-UNIX.h"
 
 int main(void)
 {

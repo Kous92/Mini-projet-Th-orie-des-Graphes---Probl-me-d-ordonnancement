@@ -1,0 +1,308 @@
+Traces d'exécution du graphe: 
+
+-> Lecture du nombre de tâches -> 10 sommets.
+-> Lecture des tâches avec leurs durées respectives
+ * Tâche 1 -> Sommet: A
+ * Tâche 2 -> Sommet: B
+ * Tâche 3 -> Sommet: C
+ * Tâche 4 -> Sommet: D
+ * Tâche 5 -> Sommet: E
+ * Tâche 6 -> Sommet: F
+ * Tâche 7 -> Sommet: G
+ * Tâche 8 -> Sommet: H
+ * Tâche 9 -> Sommet: I
+ * Tâche 10 -> Sommet: J
+-> Lecture des contraintes
+ * Sommet A, ajout de 2 contraintes... 
+ -> Ajout de la contrainte D.
+ -> Ajout de la contrainte J.
+ * Sommet B, ajout d'une contrainte... 
+   -> Ajout de la contrainte G.
+
+ * Sommet C, ajout d'une contrainte... 
+   -> Ajout de la contrainte F.
+
+ * Sommet D, ajout d'une contrainte... 
+   -> Ajout de la contrainte I.
+
+ * Sommet E, ajout d'une contrainte... 
+   -> Ajout de la contrainte D.
+
+ * Sommet F, aucune contrainte à ajouter.
+ * Sommet G, aucune contrainte à ajouter.
+ * Sommet H, ajout de 2 contraintes... 
+ -> Ajout de la contrainte E.
+ -> Ajout de la contrainte G.
+ * Sommet I, ajout de 2 contraintes... 
+ -> Ajout de la contrainte A.
+ -> Ajout de la contrainte H.
+ * Sommet J, ajout d'une contrainte... 
+   -> Ajout de la contrainte F.
+
+-> Création du graphe...
+-> Propriétés du graphe:
+ * Nombre de sommets: 12 (10 + 2 sommets incidents a et z)
+ * Graphe orienté.
+ * 1 valeur numérique (durée) pour chaque arc.
+ * Maximum 1 arc d'un sommet X vers un sommet Y donné.
+
+-> Création des arcs associés aux contraintes de type "X ne peut commencer lorsque la tâche Y est terminée"...
+ * D --[4]--> A
+ * J --[10]--> A
+ * G --[7]--> B
+ * F --[6]--> C
+ * I --[9]--> D
+ * D --[4]--> E
+ * E --[5]--> H
+ * G --[7]--> H
+ * A --[1]--> I
+ * H --[8]--> I
+ * F --[6]--> J
+-> Identification des successeurs de chaque sommet...
+ * Sommet A: I -> Successeurs: 1
+ * Sommet B: aucun successeur.
+ * Sommet C: aucun successeur.
+ * Sommet D: AE -> Successeurs: 2
+ * Sommet E: H -> Successeurs: 1
+ * Sommet F: CJ -> Successeurs: 2
+ * Sommet G: BH -> Successeurs: 2
+ * Sommet H: I -> Successeurs: 1
+ * Sommet I: D -> Successeurs: 1
+ * Sommet J: A -> Successeurs: 1
+-> Ajout des sommets incidents...
+ * Ajout de l'arc B --[2]--> z
+ * Ajout de l'arc C --[3]--> z
+ * Ajout de l'arc a --[6]--> F
+ * Ajout de l'arc a --[7]--> G
+-> Lecture des arcs et initialisation des matrices d'adjacence et des valeurs...
+ * Arc 1: D --[4]--> A
+   -> Passage à 1 dans la matrice d'adjacence, case[3][0]
+   -> Passage à 4 dans la matrice des valeurs, case[3][0]
+ * Arc 2: J --[10]--> A
+   -> Passage à 1 dans la matrice d'adjacence, case[9][0]
+   -> Passage à 10 dans la matrice des valeurs, case[9][0]
+ * Arc 3: G --[7]--> B
+   -> Passage à 1 dans la matrice d'adjacence, case[6][1]
+   -> Passage à 7 dans la matrice des valeurs, case[6][1]
+ * Arc 4: F --[6]--> C
+   -> Passage à 1 dans la matrice d'adjacence, case[5][2]
+   -> Passage à 6 dans la matrice des valeurs, case[5][2]
+ * Arc 5: I --[9]--> D
+   -> Passage à 1 dans la matrice d'adjacence, case[8][3]
+   -> Passage à 9 dans la matrice des valeurs, case[8][3]
+ * Arc 6: D --[4]--> E
+   -> Passage à 1 dans la matrice d'adjacence, case[3][4]
+   -> Passage à 4 dans la matrice des valeurs, case[3][4]
+ * Arc 7: E --[5]--> H
+   -> Passage à 1 dans la matrice d'adjacence, case[4][7]
+   -> Passage à 5 dans la matrice des valeurs, case[4][7]
+ * Arc 8: G --[7]--> H
+   -> Passage à 1 dans la matrice d'adjacence, case[6][7]
+   -> Passage à 7 dans la matrice des valeurs, case[6][7]
+ * Arc 9: A --[1]--> I
+   -> Passage à 1 dans la matrice d'adjacence, case[0][8]
+   -> Passage à 1 dans la matrice des valeurs, case[0][8]
+ * Arc 10: H --[8]--> I
+   -> Passage à 1 dans la matrice d'adjacence, case[7][8]
+   -> Passage à 8 dans la matrice des valeurs, case[7][8]
+ * Arc 11: F --[6]--> J
+   -> Passage à 1 dans la matrice d'adjacence, case[5][9]
+   -> Passage à 6 dans la matrice des valeurs, case[5][9]
+ * Arc 12: B --[2]--> z
+   -> Passage à 1 dans la matrice d'adjacence, case[1][11]
+   -> Passage à 2 dans la matrice des valeurs, case[1][11]
+ * Arc 13: C --[3]--> z
+   -> Passage à 1 dans la matrice d'adjacence, case[2][11]
+   -> Passage à 3 dans la matrice des valeurs, case[2][11]
+ * Arc 14: a --[0]--> F
+   -> Passage à 1 dans la matrice d'adjacence, case[10][5]
+   -> Passage à 0 dans la matrice des valeurs, case[10][5]
+ * Arc 15: a --[0]--> G
+   -> Passage à 1 dans la matrice d'adjacence, case[10][6]
+   -> Passage à 0 dans la matrice des valeurs, case[10][6]
+-> Calcul de la matrice d'adjacence associée à sa fermeture transitive (12 sommets -> 10 puissances de 2 à 11)...
+
+ * Matrice d'adjacence M avant calcul de la fermeture transitive: 
+
+       0  0  0  0  0  0  0  0  1  0  0  0  
+       0  0  0  0  0  0  0  0  0  0  0  1  
+       0  0  0  0  0  0  0  0  0  0  0  1  
+       1  0  0  0  1  0  0  0  0  0  0  0  
+       0  0  0  0  0  0  0  1  0  0  0  0  
+M =    0  0  1  0  0  0  0  0  0  1  0  0  
+       0  1  0  0  0  0  0  1  0  0  0  0  
+       0  0  0  0  0  0  0  0  1  0  0  0  
+       0  0  0  1  0  0  0  0  0  0  0  0  
+       1  0  0  0  0  0  0  0  0  0  0  0  
+       0  0  0  0  0  1  1  0  0  0  0  0  
+       0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 1: M^2 = M x M
+
+        0  0  0  1  0  0  0  0  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  0  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  1  1  0  0  0  
+M^2 =   1  0  1  0  0  0  0  0  0  1  0  1  
+        0  1  0  0  0  0  0  1  1  0  0  1  
+        0  0  0  1  0  0  0  0  1  0  0  0  
+        1  0  0  1  1  0  0  0  0  0  0  0  
+        1  0  0  0  0  0  0  0  1  0  0  0  
+        0  1  1  0  0  1  1  1  0  1  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 2: M^3 = M x M
+
+        1  0  0  1  1  0  0  0  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  1  0  0  0  1  1  0  0  0  
+M^3 =   1  0  1  0  0  0  0  0  1  1  0  1  
+        0  1  0  1  0  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  0  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  0  1  0  0  0  
+        1  1  1  1  0  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 3: M^4 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^4 =   1  0  1  1  1  0  0  0  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 4: M^5 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^5 =   1  0  1  1  1  0  0  1  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 5: M^6 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^6 =   1  0  1  1  1  0  0  1  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 6: M^7 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^7 =   1  0  1  1  1  0  0  1  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 7: M^8 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^8 =   1  0  1  1  1  0  0  1  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 8: M^9 = M x M
+
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+M^9 =   1  0  1  1  1  0  0  1  1  1  0  1  
+        1  1  0  1  1  0  0  1  1  0  0  1  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  0  0  1  1  0  0  1  1  0  0  0  
+        1  1  1  1  1  1  1  1  1  1  0  1  
+        0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 9: M^10 = M x M
+
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+M^10 =   1  0  1  1  1  0  0  1  1  1  0  1  
+         1  1  0  1  1  0  0  1  1  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  1  1  1  1  1  1  1  1  1  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> Itération 10: M^11 = M x M
+
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+M^11 =   1  0  1  1  1  0  0  1  1  1  0  1  
+         1  1  0  1  1  0  0  1  1  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  1  1  1  1  1  1  1  1  1  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  0  
+
+-> Détection de circuit dans le graphe...
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+M^11 =   1  0  1  1  1  0  0  1  1  1  0  1  
+         1  1  0  1  1  0  0  1  1  0  0  1  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  0  0  1  1  0  0  1  1  0  0  0  
+         1  1  1  1  1  1  1  1  1  1  0  1  
+         0  0  0  0  0  0  0  0  0  0  0  0  
+
+ -> ATTENTION: Le graphe contient au moins un circuit (il y a au moins un 1 dans la diagonale) !
+
+>>> ALERTE: Le calcul du rang de chaque sommet est impossible !
+
+>>> Fin des résultats.

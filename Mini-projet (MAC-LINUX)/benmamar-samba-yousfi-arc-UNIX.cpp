@@ -2,9 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "graphe.h"
-#include "sommet.h"
-#include "arc.h"
+#include "benmamar-samba-yousfi-graphe-UNIX.h"
+#include "benmamar-samba-yousfi-sommet-UNIX.h"
+#include "benmamar-samba-yousfi-arc-UNIX.h"
 
 using namespace std;
 

@@ -6,8 +6,8 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
-#include "sommet.h"
-#include "arc.h"
+#include "benmamar-samba-yousfi-sommet.h"
+#include "benmamar-samba-yousfi-arc.h"
 
 using namespace std;
 

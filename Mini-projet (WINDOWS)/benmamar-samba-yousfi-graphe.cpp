@@ -7,15 +7,16 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
-#include "graphe.h"
-#include "sommet.h"
-#include "arc.h"
+#include <windows.h>
+#include "benmamar-samba-yousfi-graphe.h"
+#include "benmamar-samba-yousfi-sommet.h"
+#include "benmamar-samba-yousfi-arc.h"
 
 using namespace std;
 
 void Pause()
 {
-    wcout << L"Appuyer sur entrée pour continuer ";
+    cout << "Appuyer sur entree pour continuer ";
     cin.ignore().get(); // Cette commande de saisie sécurisée ordonne a l'utilisateur d'appuyer sur entrée (et seul entrée marche)
     cout << endl;
     
@@ -194,7 +195,7 @@ Graphe::~Graphe()
 
 bool Graphe::initialisationContraintes(string nom_fichier, ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 
 	string chaine;
 	int duree;
@@ -202,16 +203,16 @@ bool Graphe::initialisationContraintes(string nom_fichier, ofstream& fichier_res
 	istringstream iss;
 	ifstream fichier(nom_fichier.c_str());
 
-	wcout << L"Vérification de l'existence du fichier... ";
+	cout << "Verification de l'existence du fichier... ";
 	cout << nom_fichier << "... ";
 
 	// Vérification de l'existence du fichier
 	if ((fichier) && (fichier_resultat))
 	{
 		cout << "OK" << endl;
-		wcout << L"-> Chaque étape d'exécution pour générer le graphe sera sauvegardé automatiquement dans un fichier résultat" << endl << endl;
+		cout << "-> Chaque etape d'execution pour generer le graphe sera sauvegarde automatiquement dans un fichier resultat" << endl << endl;
 
-		fichier_resultat << "Traces d'exécution du graphe: " << endl << endl;
+		fichier_resultat << "Traces d'execution du graphe: " << endl << endl;
 
 		getline(fichier, chaine); // La chaîne "Sommets" est lue, on passe à la suite
 
@@ -220,18 +221,18 @@ bool Graphe::initialisationContraintes(string nom_fichier, ofstream& fichier_res
 
 		if (nombre_taches > 1)
 		{
-			wcout << L">>> Étape 1: Lecture du nombre de tâches -> " << nombre_taches << " sommets." << endl << endl;
-			fichier_resultat << "-> Lecture du nombre de tâches -> " << nombre_taches << " sommets." << endl;
+			cout << ">>> Etape 1: Lecture du nombre de taches -> " << nombre_taches << " sommets." << endl << endl;
+			fichier_resultat << "-> Lecture du nombre de taches -> " << nombre_taches << " sommets." << endl;
 		}
 		else
 		{
-			wcout << L">>> Étape 1: Lecture du nombre de tâches -> " << nombre_taches << " sommet." << endl << endl;
-			fichier_resultat << "-> Lecture du nombre de tâches -> " << nombre_taches << " sommet." << endl;
+			cout << ">>> Etape 1: Lecture du nombre de taches -> " << nombre_taches << " sommet." << endl << endl;
+			fichier_resultat << "-> Lecture du nombre de taches -> " << nombre_taches << " sommet." << endl;
 		}
 		
 		getline(fichier, chaine); // La chaîne "Sommets + valeurs" est lue, on passe à la suite
-		wcout << L">>> Étape 2: Lecture des tâches avec leurs durées respectives et sauvegarde en mémoire..." << endl << endl;
-		fichier_resultat << "-> Lecture des tâches avec leurs durées respectives" << endl;
+		cout << ">>> Etape 2: Lecture des taches avec leurs durees respectives et sauvegarde en memoire..." << endl << endl;
+		fichier_resultat << "-> Lecture des taches avec leurs durees respectives" << endl;
 
 		// Lecture des tâches
 		for (int i = 0; i <= nombre_taches; i++)
@@ -253,17 +254,17 @@ bool Graphe::initialisationContraintes(string nom_fichier, ofstream& fichier_res
 				liste_taches.push_back(chaine.substr(0, 1));
 				liste_duree.push_back(duree);
 
-				wcout << L">>> Ajout de la tâche " << i << " -> Sommet: ";
+				cout << ">>> Ajout de la tache " << i << " -> Sommet: ";
 				cout << chaine.substr(0, 1) << endl;
-				fichier_resultat << " * Tâche " << i << " -> Sommet: " << chaine.substr(0, 1) << endl;
+				fichier_resultat << " * Tache " << i << " -> Sommet: " << chaine.substr(0, 1) << endl;
 			}
 		}
 
 		Pause();
-		system("clear");
+		system("cls");
 
 		getline(fichier, chaine); // La chaîne "Sommets + contraintes" est lue, on passe à la suite
-		wcout << L">>> Étape 3: Lecture des contraintes..." << endl << endl;
+		cout << ">>> Etape 3: Lecture des contraintes..." << endl << endl;
 		fichier_resultat << "-> Lecture des contraintes" << endl;
 
 		// Lecture des contraintes
@@ -333,15 +334,15 @@ int Graphe::getPuissanceFermetureTransitive() const
 
 void Graphe::affichageListeTaches() const
 {
-	system("clear");
+	system("cls");
 
-	wcout << L">>> Liste des tâches: " << endl << endl;
+	cout << ">>> Liste des taches: " << endl << endl;
 	// Lecture des tâches
 	for (int i = 0; i < nombre_taches; i++)
 	{
-		wcout << L">>> Tâche " << (i + 1) << " -> Sommet: ";
+		cout << ">>> Tache " << (i + 1) << " -> Sommet: ";
 		cout << liste_taches[i] << ", ";
-		wcout << L"durée: ";
+		cout << "duree: ";
 		cout << liste_duree[i] << endl;
 	}
 
@@ -361,9 +362,9 @@ Sommet Graphe::definitionContraintes(string chaine, ofstream& fichier_resultat)
 		S.setNombreContraintes(chaine.length() - 1);
 
 		cout << " * Sommet " << chaine.substr(0, 1) << ", ";
-		wcout << L"aucune contrainte à ajouter." << endl;
+		cout << "aucune contrainte a ajouter." << endl;
 
-		fichier_resultat << " * Sommet " << chaine.substr(0, 1) << ", aucune contrainte à ajouter." << endl;
+		fichier_resultat << " * Sommet " << chaine.substr(0, 1) << ", aucune contrainte a ajouter." << endl;
 	}
 	else if (chaine.length() == 3) // 1 contrainte
 	{
@@ -446,7 +447,7 @@ Arc Graphe::definitionArc(string sommet, string predecesseur, int duree)
 
 void Graphe::ajoutSommetsIncidents(ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 
 	int nombre_contraintes, duree;
 	string nom_sommet;
@@ -458,7 +459,7 @@ void Graphe::ajoutSommetsIncidents(ofstream& fichier_resultat)
 	string sommet_omega = "z";
 	int nombre_predecesseurs_omega = 0, nombre_successeurs_alpha = 0, nombre_successeurs;
 
-	wcout << L">>> Étape 7: Ajout des sommets incidents..." << endl << endl;
+	cout << ">>> Etape 7: Ajout des sommets incidents..." << endl << endl;
 	fichier_resultat << "-> Ajout des sommets incidents..." << endl;
 
 	// Lecture des contraintes
@@ -512,10 +513,10 @@ void Graphe::ajoutSommetsIncidents(ofstream& fichier_resultat)
 
 bool Graphe::detectionCircuit(ofstream& fichier_resultat)
 {
-   	system("clear");
+   	system("cls");
 
-   	wcout << L">>> Étape 10: Détection de circuit dans le graphe..." << endl;
-   	fichier_resultat << "-> Détection de circuit dans le graphe..." << endl;
+   	cout << ">>> Étape 10: Detection de circuit dans le graphe..." << endl;
+   	fichier_resultat << "-> Detection de circuit dans le graphe..." << endl;
 
    	/* La méthode la plus simple pour détecter un circuit est de lire le contenu de la matrice d'adjacence associée à sa fermeture transitive:
    	   - Il faut lire chaque case de la diagonale
@@ -523,7 +524,7 @@ bool Graphe::detectionCircuit(ofstream& fichier_resultat)
    	   - Sinon, si au moins 1 case de la diagonale est égale à 1, le graphe contient alors un circuit, on interrompt la lecture */
 
    	// Étape 1: Vérification de la présence de boucles
-   	wcout << L"-> Lecture de la matrice d'adjacence associée à sa fermeture transitive: " << endl << endl;
+   	cout << "-> Lecture de la matrice d'adjacence associee a sa fermeture transitive: " << endl << endl;
 
    	affichageMatriceAdjacencePuissance(puissance_fermeture_transitive, false, fichier_resultat);
 
@@ -559,7 +560,7 @@ bool Graphe::detectionCircuit(ofstream& fichier_resultat)
 
 void Graphe::definitionMatrices(ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 
 	int nombre_arcs = liste_arc.size();
 	int position1, position2;
@@ -568,7 +569,7 @@ void Graphe::definitionMatrices(ofstream& fichier_resultat)
 	int duree_actuelle;
 	vector<string>::iterator it; // Itérateur pour rechercher la position d'un élément
 
-	wcout << L">>> Étape 8: Lecture des arcs et initialisation des matrices d'adjacence et des valeurs..." << endl << endl;
+	cout << ">>> Etape 8: Lecture des arcs et initialisation des matrices d'adjacence et des valeurs..." << endl << endl;
 	fichier_resultat << "-> Lecture des arcs et initialisation des matrices d'adjacence et des valeurs..." << endl;
 
 	// Lecture des arcs
@@ -587,11 +588,11 @@ void Graphe::definitionMatrices(ofstream& fichier_resultat)
 		it = find(liste_taches.begin(), liste_taches.end(), predecesseur_actuel); // it++
 		position2 = distance(liste_taches.begin(), it);
 
-		wcout << L"   -> Passage à 1 dans la matrice d'adjacence, case[" << position2 << "][" << position1 << "]" << endl;
-		wcout << L"   -> Passage à " << duree_actuelle << " dans la matrice des valeurs, case[" << position2 << "][" << position1 << "]" << endl;
+		cout << "   -> Passage a 1 dans la matrice d'adjacence, case[" << position2 << "][" << position1 << "]" << endl;
+		cout << "   -> Passage a " << duree_actuelle << " dans la matrice des valeurs, case[" << position2 << "][" << position1 << "]" << endl;
 
-		fichier_resultat << "   -> Passage à 1 dans la matrice d'adjacence, case[" << position2 << "][" << position1 << "]" << endl;
-		fichier_resultat << "   -> Passage à " << duree_actuelle << " dans la matrice des valeurs, case[" << position2 << "][" << position1 << "]" << endl;
+		fichier_resultat << "   -> Passage a 1 dans la matrice d'adjacence, case[" << position2 << "][" << position1 << "]" << endl;
+		fichier_resultat << "   -> Passage a " << duree_actuelle << " dans la matrice des valeurs, case[" << position2 << "][" << position1 << "]" << endl;
 
 		matrice_adjacence[position2][position1] = true;
 		matrice_valeurs[position2][position1] = duree_actuelle;
@@ -600,7 +601,7 @@ void Graphe::definitionMatrices(ofstream& fichier_resultat)
 
 void Graphe::FermetureTransitiveMatrice(ofstream& fichier_resultat)
 {	
-	system("clear");
+	system("cls");
 
 	/* Méthode pour calculer la fermeture transitive d'un graphe à l'aide de la matrice d'adjacence
    	   -> On utilisera l'algorithme de Warshall ou Roy-Warshall:
@@ -625,10 +626,10 @@ void Graphe::FermetureTransitiveMatrice(ofstream& fichier_resultat)
 		}
 	} 
     
-    wcout << L">>> Étape 9: Calcul de la matrice d'adjacence associée à sa fermeture transitive (" << nombre_taches << " sommets -> " << nombre_taches - 2 << L" puissances de 2 à " << nombre_taches - 1 << ")..." << endl << endl;
-    wcout << L" -> Matrice d'adjacence M avant calcul de la fermeture transitive: " << endl << endl;
+    cout << ">>> Etape 9: Calcul de la matrice d'adjacence associee a sa fermeture transitive (" << nombre_taches << " sommets -> " << nombre_taches - 2 << " puissances de 2 a " << nombre_taches - 1 << ")..." << endl << endl;
+    cout << " -> Matrice d'adjacence M avant calcul de la fermeture transitive: " << endl << endl;
 
-   	fichier_resultat << "-> Calcul de la matrice d'adjacence associée à sa fermeture transitive (" << nombre_taches << " sommets -> " << nombre_taches - 2 << " puissances de 2 à " << nombre_taches - 1 << ")..." << endl << endl;
+   	fichier_resultat << "-> Calcul de la matrice d'adjacence associée a sa fermeture transitive (" << nombre_taches << " sommets -> " << nombre_taches - 2 << " puissances de 2 a " << nombre_taches - 1 << ")..." << endl << endl;
     fichier_resultat << " * Matrice d'adjacence M avant calcul de la fermeture transitive: " << endl << endl;
 
     affichageMatriceAdjacencePuissance(1, false, fichier_resultat);
@@ -640,13 +641,13 @@ void Graphe::FermetureTransitiveMatrice(ofstream& fichier_resultat)
     {
     	if (n == 2)
     	{
-    		wcout << L" -> Itération " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
-    		fichier_resultat << " -> Itération " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
+    		cout << " -> Iteration " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
+    		fichier_resultat << " -> Iteration " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
     	}
     	else
     	{
-    		wcout << L" -> Itération " << (n - 1) << ": M^" << n << " = M^" << (n - 1) << " x M" << endl << endl;
-    		fichier_resultat << " -> Itération " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
+    		cout << " -> Iteration " << (n - 1) << ": M^" << n << " = M^" << (n - 1) << " x M" << endl << endl;
+    		fichier_resultat << " -> Iteration " << (n - 1) << ": M^" << n << " = M x M" << endl << endl;
     	}
 
     	for (int i = 0; i < nombre_taches; i++)
@@ -683,20 +684,20 @@ void Graphe::FermetureTransitiveMatrice(ofstream& fichier_resultat)
 
 void Graphe::definitionRangsSommets(ofstream& fichier_resultat)
 {
-    system("clear");
+    system("cls");
 
     string sommet_cible;
-    wcout << L">>> Étape 11: Définition des rangs des sommets..." << endl << endl;
-    fichier_resultat << "-> Définition des rangs des sommets..." << endl;
+    cout << ">>> Etape 11: Definition des rangs des sommets..." << endl << endl;
+    fichier_resultat << "-> Definition des rangs des sommets..." << endl;
 
     for (int i = 0; i < nombre_taches; i++) 
     {
         sommet_cible = liste_sommet[i].getNomSommet();
         cout << " * Sommet : " << sommet_cible;
         rangs_sommets[sommet_cible] = calculRecursifRangSommet(i);
-        wcout << L"  -> Rang attribué: " << rangs_sommets[sommet_cible] << endl;
+        cout << "  -> Rang attribue: " << rangs_sommets[sommet_cible] << endl;
 
-        fichier_resultat << " * Sommet : " << sommet_cible << "  -> Rang attribué: " << rangs_sommets[sommet_cible] << endl;
+        fichier_resultat << " * Sommet : " << sommet_cible << "  -> Rang attribue: " << rangs_sommets[sommet_cible] << endl;
 
         // On sauvegarde le rang dans une instance de la classe Sommet via le tableau liste_sommet
         liste_sommet[i].setRangSommet(rangs_sommets[sommet_cible]);
@@ -746,15 +747,15 @@ int Graphe::calculRecursifRangSommet(int position_sommet)
 
 void Graphe::definitionCalendrierAuPlusTot(ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 
 	/* L'utilisation d'un tableau associatif map<string, int> est très utile ici:
 	   -> On va récupérer les rangs du tableau associatif map<string, int> rangs_sommets
 	   -> On va stocker le résultat du calcul récursif de la date au plus tard dans le tableau associatif
 	      map<string, int> dates_plus_tard
 	*/
-	wcout << L">>> Étape 12: Définition du calendrier au plus tôt..." << endl << endl;
-	fichier_resultat << "-> Définition du calendrier au plus tôt..." << endl;
+	cout << ">>> Etape 12: Definition du calendrier au plus tot..." << endl << endl;
+	fichier_resultat << "-> Definition du calendrier au plus tot..." << endl;
 	int i = 0;
 
     // Pour chaque sommet, on calcule sa date au plus tôt
@@ -762,8 +763,8 @@ void Graphe::definitionCalendrierAuPlusTot(ofstream& fichier_resultat)
     {
         dates_plus_tot[it->first] = calculRecursifDateAuPlusTot(i);
         cout << " -> Sommet: " << it->first << ", ";
-        wcout << L"Date au plus tôt attribuée: " << dates_plus_tot[it->first] << endl;
-        fichier_resultat << " * Sommet: " << it->first << ", Date au plus tôt attribuée: " << dates_plus_tot[it->first] << endl;
+        cout << "Date au plus tot attribuee: " << dates_plus_tot[it->first] << endl;
+        fichier_resultat << " * Sommet: " << it->first << ", Date au plus tot attribuee: " << dates_plus_tot[it->first] << endl;
         i++;
     }
 }
@@ -812,10 +813,10 @@ int Graphe::calculRecursifDateAuPlusTot(int position_sommet)
 
 void Graphe::definitionCalendrierAuPlusTard(ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 
-	wcout << L">>> Étape 13: Définition du calendrier au plus tard..." << endl << endl;
-	fichier_resultat << "-> Définition du calendrier au plus tard..." << endl;
+	cout << ">>> Etape 13: Definition du calendrier au plus tard..." << endl << endl;
+	fichier_resultat << "-> Definition du calendrier au plus tard..." << endl;
 	int i = 0;
 	
 	/* L'utilisation d'un tableau associatif map<string, int> est très utile ici:
@@ -829,8 +830,8 @@ void Graphe::definitionCalendrierAuPlusTard(ofstream& fichier_resultat)
         // Les sommets sont dans l'ordre, on prend le numéro (ici i) faisant référence au nom du sommet
         dates_plus_tard[it->first] = calculRecursifDateAuPlusTard(i);
         cout << " -> Sommet: " << it->first << ", ";
-        wcout << L"Date au plus tard attribuée: " << dates_plus_tard[it->first] << endl;
-        fichier_resultat << " * Sommet: " << it->first << ", Date au plus tard attribuée: " << dates_plus_tard[it->first] << endl;
+        cout << "Date au plus tard attribuee: " << dates_plus_tard[it->first] << endl;
+        fichier_resultat << " * Sommet: " << it->first << ", Date au plus tard attribuee: " << dates_plus_tard[it->first] << endl;
         i++;
     }
 }
@@ -879,7 +880,7 @@ int Graphe::calculRecursifDateAuPlusTard(int position_sommet)
 
 void Graphe::creationGrapheOrdonnancement(ofstream& fichier_resultat)
 {
-	system("clear");
+	system("cls");
 	vector<string>::iterator it; // Itérateur pour rechercher la position d'un élément
 	int position = 0;
 	string sommet_actuel;
@@ -888,22 +889,22 @@ void Graphe::creationGrapheOrdonnancement(ofstream& fichier_resultat)
 
 	if (fichier_resultat)
 	{
-		wcout << L">>> Étape 4: Création du graphe..." << endl << endl;
-		wcout << L">>> Propriétés du graphe:" << endl;
-		wcout << L" * Nombre de sommets: " << this->getNombreTaches() + 2 << " (" << this->getNombreTaches() << " + 2 sommets incidents a et z)" << endl; // Il faut inclure les sommets incidents
-		wcout << L" * Graphe orienté." << endl;
-		wcout << L" * 1 valeur numérique (durée) pour chaque arc." << endl;
-		wcout << L" * Maximum 1 arc d'un sommet X vers un sommet Y donné." << endl << endl;
+		cout << ">>> Etape 4: Creation du graphe..." << endl << endl;
+		cout << ">>> Proprietes du graphe:" << endl;
+		cout << " * Nombre de sommets: " << this->getNombreTaches() + 2 << " (" << this->getNombreTaches() << " + 2 sommets incidents a et z)" << endl; // Il faut inclure les sommets incidents
+		cout << " * Graphe oriente." << endl;
+		cout << " * 1 valeur numerique (duree) pour chaque arc." << endl;
+		cout << " * Maximum 1 arc d'un sommet X vers un sommet Y donne." << endl << endl;
 
-		wcout << L">>> Étape 5: Création des arcs associés aux contraintes de type \"X ne peut commencer lorsque la tâche Y est terminée\"..." << endl;
+		cout << ">>> Etape 5: Creation des arcs associes aux contraintes de type \"X ne peut commencer lorsque la tache Y est terminee\"..." << endl;
 
-		fichier_resultat << "-> Création du graphe..." << endl;
-		fichier_resultat << "-> Propriétés du graphe:" << endl;
+		fichier_resultat << "-> Creation du graphe..." << endl;
+		fichier_resultat << "-> Proprietes du graphe:" << endl;
 		fichier_resultat << " * Nombre de sommets: " << this->getNombreTaches() + 2 << " (" << this->getNombreTaches() << " + 2 sommets incidents a et z)" << endl; // Il faut inclure les sommets incidents
-		fichier_resultat << " * Graphe orienté." << endl;
-		fichier_resultat << " * 1 valeur numérique (durée) pour chaque arc." << endl;
-		fichier_resultat << " * Maximum 1 arc d'un sommet X vers un sommet Y donné." << endl << endl;
-		fichier_resultat << "-> Création des arcs associés aux contraintes de type \"X ne peut commencer lorsque la tâche Y est terminée\"..." << endl;
+		fichier_resultat << " * Graphe oriente." << endl;
+		fichier_resultat << " * 1 valeur numerique (duree) pour chaque arc." << endl;
+		fichier_resultat << " * Maximum 1 arc d'un sommet X vers un sommet Y donne." << endl << endl;
+		fichier_resultat << "-> Creation des arcs associes aux contraintes de type \"X ne peut commencer lorsque la tache Y est terminee\"..." << endl;
 
 		// Ajout des arcs
 		for (int i = 0; i < nombre_taches; i++)
@@ -925,10 +926,10 @@ void Graphe::creationGrapheOrdonnancement(ofstream& fichier_resultat)
 		cout << endl;
 
 		Pause();
-		system("clear");
+		system("cls");
 
 		// Ajout des successeurs pour chaque arc
-		wcout << L">>> Étape 6: Identification des successeurs de chaque sommet..." << endl;
+		cout << ">>> Etape 6: Identification des successeurs de chaque sommet..." << endl;
 		fichier_resultat << "-> Identification des successeurs de chaque sommet..." << endl;
 
 		for (int i = 0; i < nombre_taches; i++)
@@ -978,7 +979,7 @@ void Graphe::creationGrapheOrdonnancement(ofstream& fichier_resultat)
 
 void Graphe::affichageListeContraintes() const
 {
-	system("clear");
+	system("cls");
 
 	int nombre_contraintes;
 	string nom_sommet;
@@ -995,12 +996,12 @@ void Graphe::affichageListeContraintes() const
 			if (nom_sommet == "a")
 			{
 				cout << ">>> Le sommet " << nom_sommet << " n'a aucune contrainte -> ";
-				wcout << L"Il s'agit du sommet incident de début de projet." << endl;
+				cout << "Il s'agit du sommet incident de debut de projet." << endl;
 			}
 			else
 			{
 				cout << ">>> Le sommet " << nom_sommet << " n'a aucune contrainte -> ";
-				wcout << L"Le sommet incident a sera son prédécesseur." << endl;
+				cout << "Le sommet incident a sera son predecesseur." << endl;
 			}
 		}
 		else if (nombre_contraintes == 1) // 1 contrainte
@@ -1008,9 +1009,9 @@ void Graphe::affichageListeContraintes() const
 			cout << ">>> Sommet " << nom_sommet << ": 1 contrainte." << endl;
 
 			cout << " * " << nom_sommet;
-			wcout << L" ne peut commencer que lorsque la tâche ";
+			cout << " ne peut commencer que lorsque la tache ";
 			cout << liste_sommet[i].getContrainte(0); // Tableau d'une valeur = premier indice
-			wcout << L" est terminée." << endl << endl;
+			cout << " est terminee." << endl << endl;
 		}
 		else // 2 contraintes ou plus
 		{
@@ -1021,9 +1022,9 @@ void Graphe::affichageListeContraintes() const
 				for (int j = 0; j < liste_sommet[i].getNombreContraintes(); j++)
 				{
 					cout << " * " << nom_sommet;
-					wcout << L" ne peut commencer que lorsque la tâche ";
+					cout << " ne peut commencer que lorsque la tache ";
 					cout << liste_sommet[i].getContrainte(j);
-					wcout << L" est terminée." << endl;
+					cout << " est terminee." << endl;
 				}
 			}
 
@@ -1034,7 +1035,7 @@ void Graphe::affichageListeContraintes() const
 
 void Graphe::affichageListeSuccesseurs() const
 {
-	system("clear");
+	system("cls");
 
 	int nombre_successeurs;
 	int nombre_contraintes;
@@ -1086,7 +1087,7 @@ void Graphe::affichageListeSuccesseurs() const
 
 void Graphe::affichageListeArcs() const
 {
-	system("clear");
+	system("cls");
 
 	cout << ">>> Liste des arcs: " << endl << endl;
 
@@ -1099,7 +1100,7 @@ void Graphe::affichageListeArcs() const
 
 void Graphe::affichageMatriceAdjacence() const
 {
-	system("clear");
+	system("cls");
 
 	cout << ">>> Matrice d'adjacence: " << endl << endl;
 
@@ -1142,7 +1143,7 @@ void Graphe::affichageMatriceAdjacence() const
 
 void Graphe::affichageMatriceValeur() const
 {
-	system("clear");
+	system("cls");
 
 	cout << ">>> Matrice des valeurs: " << endl << endl;
 
@@ -1185,7 +1186,7 @@ void Graphe::affichageMatriceValeur() const
 
 void Graphe::affichageMatriceTransitive() const
 {
-	system("clear");
+	system("cls");
 
 	cout << ">>> Matrice transitive: " << endl << endl;
 
@@ -1231,10 +1232,10 @@ void Graphe::affichageMatriceAdjacencePuissance(int puissance, bool affichage, o
 	// Si on n'est pas dans la détection de circuit
 	if (affichage == true)
 	{
-		system("clear");
+		system("cls");
 
-		wcout << L">>> Matrice d'adjacence associée à sa fermeture transitive: " << endl;
-		wcout << L" -> Ici, avec " << nombre_taches << " sommets: M^" << puissance << endl << endl;
+		cout << ">>> Matrice d'adjacence associee a sa fermeture transitive: " << endl;
+		cout << " -> Ici, avec " << nombre_taches << " sommets: M^" << puissance << endl << endl;
 	}
 
 	// Affichage du contenu de la matrice
@@ -1382,7 +1383,7 @@ void Graphe::affichageMatriceAdjacencePuissance(int puissance, bool affichage, o
 
 void Graphe::affichageRangsSommets() const
 {
-	system("clear");
+	system("cls");
 
 	/* ATTENTION: VOILÀ COMMENT FAIRE POUR QUE LE COMPILATEUR NE SE METTRE PAS À RÂLER À CAUSE D'UNE CONVERSION NON VIABLE D'UN ITÉRATEUR
 	   -> Cela s'applique pour tous les conteneurs de la STL et autres templates.
@@ -1399,7 +1400,7 @@ void Graphe::affichageRangsSommets() const
 		return;
 	}
 
-	wcout << L">>> Sommets et leurs rangs respectifs (par ordre alphabétique selon le nom du sommet): " << endl;
+	cout << ">>> Sommets et leurs rangs respectifs (par ordre alphabetique selon le nom du sommet): " << endl;
 
 	// Sommets et leurs rangs attribués (avant tri), affichage du tableau associatif (map)
 	cout << "Sommet: ";
@@ -1443,17 +1444,17 @@ void Graphe::affichageRangsSommets() const
 
 void Graphe::affichageTableauDates() const
 {
-	system("clear");
+	system("cls");
 	int duree_minimale = 0, i = 0;
 	map<string, int>::const_iterator it2 = dates_plus_tard.begin();
 
-	wcout << L">>> Dates au plus tôt et au plus tard de chaque tâche du projet: " << endl << endl;
+	cout << ">>> Dates au plus tot et au plus tard de chaque tache du projet: " << endl << endl;
 
 	for (map<string, int>::const_iterator it = dates_plus_tot.begin(); it != dates_plus_tot.end(); it++)
 	{
-		wcout << L"Tâche ";
+		cout << "Tache ";
 		cout << liste_taches[i] << " -> ";
-		wcout << L"Date au plus tôt: " << it->second << L", date au plus tard: " << it2->second << endl;
+		cout << "Date au plus tot: " << it->second << ", date au plus tard: " << it2->second << endl;
 		duree_minimale = it2->second;
 		i++;
 		*it2++;
@@ -1461,18 +1462,18 @@ void Graphe::affichageTableauDates() const
 
 	cout << endl;
 
-	wcout << L">>> Durée minimale nécéssaire pour réaliser le projet: " << duree_minimale << endl << endl;
+	cout << ">>> Duree minimale necessaire pour realiser le projet: " << duree_minimale << endl << endl;
 }
 
 void Graphe::affichageDiagrammeGanttCalendrierPlusTot()
 {
-	system("clear");
+	system("cls");
 
 	int dernier_delai = 0, i = 0;
 	vector<int> date_debut;
 	vector<int> date_fin;
 
-	wcout << L">>> Diagramme de GANTT du calendrier au plus tôt: " << endl << endl;
+	cout << ">>> Diagramme de GANTT du calendrier au plus tot: " << endl << endl;
 
 	// Calcul des intervalles pour faire les flèches du diagramme de GANTT
 	for (map<string, int>::iterator it = dates_plus_tot.begin(); it != dates_plus_tot.end(); it++)
@@ -1508,7 +1509,7 @@ void Graphe::affichageDiagrammeGanttCalendrierPlusTot()
 		for (int j = 0; j < dernier_delai; j++)
 		{
 			// Si on n'est pas dans l'intervalle de la tâche en question, l'espace est vide, sinon un symbole est inscrit sur les cases de l'intervalle
-			if ((j < date_debut[i]) || (j > date_fin[i]))
+			if ((j < date_debut[i]) || (j >= date_fin[i]))
 			{
 				// Fin de ligne
 				if (j == dernier_delai - 1)
@@ -1542,7 +1543,7 @@ void Graphe::affichageDiagrammeGanttCalendrierPlusTot()
 
 void Graphe::affichageDiagrammeGanttCalendrierPlusTard()
 {
-	system("clear");
+	system("cls");
 
 	int dernier_delai = 0, i = 0;
 
@@ -1586,7 +1587,7 @@ void Graphe::affichageDiagrammeGanttCalendrierPlusTard()
 		for (int j = 0; j < dernier_delai; j++)
 		{
 			// Si on n'est pas dans l'intervalle de la tâche en question, l'espace est vide, sinon un symbole est inscrit sur les cases de l'intervalle
-			if ((j < date_debut[i]) || (j > date_fin[i]))
+			if ((j < date_debut[i]) || (j >= date_fin[i]))
 			{
 				// Fin de ligne
 				if (j == dernier_delai - 1)

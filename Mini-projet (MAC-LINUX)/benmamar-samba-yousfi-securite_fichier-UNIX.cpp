@@ -4,12 +4,12 @@
 #include <limits>
 #include <string>
 #include <vector>
-#include "securite_fichier.h"
+#include "benmamar-samba-yousfi-securite_fichier-UNIX.h"
 
 using namespace std;
 
 /* Le nec plus ultra en matière d'analyse syntaxique d'un fichier pour vérifier la conformité d'un fichier avant de générer le graphe:
-   -> 370 lignes de codes pour cette puissante fonction d'analyse syntaxique
+   -> 370 lignes de code pour cette puissante fonction d'analyse syntaxique
    -> Chaque ligne est lue avec grande précision
    -> Chaque caractère est sensible à la casse
    -> La moindre bavure syntaxique à chaque ligne sera signalée d'une erreur et rendra alors le fichier invalide
